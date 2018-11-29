@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include novo *.css
+recursive-include novo *.csv
+recursive-include novo *.html
+recursive-include novo *.ico
+recursive-include novo *.js
+recursive-include novo *.json
+recursive-include novo *.md
+recursive-include novo *.png
+recursive-include novo *.py
+recursive-include novo *.svg
+recursive-include novo *.txt
+recursive-exclude novo *.pyc
