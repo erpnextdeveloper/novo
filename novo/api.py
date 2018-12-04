@@ -257,7 +257,7 @@ def makePOName(self,method):
 			else:
 				idx = 1
 
-			self.name = self.production_order + ('-%.1i' % idx)
+			self.name = self.production_order.replace('PROD','SAMP') + ('-%.1i' % idx)
 		
 
 
@@ -288,7 +288,18 @@ def makebomname():
 		idx = 1
 
 	self.name = 'BOM '+('-%.6i' % idx)
-	
+
+
+
+@frappe.whitelist()
+def addTaxInItem():
+	items=frappe.db.sql("""select name from `tabItem` where item_group='Main Fabric'""")
+	item_tax='[{"tax_type":"IGST - BCC","tax_rate":5},{"tax_type":"CGST - BCC","tax_rate":2.5},{"tax_type":"SGST - BCC","tax_rate":2.5}]'
+	if items:
+		for row in items:
+			doc=frappe.get_doc("Item",row[0])
+			doc.taxes=dict(item_tax)
+			doc.save()
 	
 
 
