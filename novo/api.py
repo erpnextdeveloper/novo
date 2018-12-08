@@ -195,39 +195,38 @@ def makeProductionOrder(item_code,bom,qty,sales_order,sales_order_item,warehouse
 @frappe.whitelist()
 def makeSampleProductionOrder(item_code,qty,sales_order,sales_order_item,d_no=None,measurement_no=None):
 	try:
-		po_no=frappe.db.sql("""select name from `tabProduction Order` where sales_order=%s and production_item=%s""",(sales_order,item_code))
-		if not po_no:
-			frappe.throw("Can't Create Sample Production Order Before Main Production Order")
-		else:
-			garment_type=frappe.db.sql("""select material_serial from `tabItem` where name=%s""",item_code)
-			if garment_type:
-				garment_details=frappe.get_doc("Garment Type",garment_type[0][0])
-				if not garment_details.sample_item:
-					frappe.throw("Select Sample Item For Garment {0}".format(garment_type[0][0]))
-				elif not garment_details.sample_bom:
-					frappe.throw("Select BOM For Sample Item In Garment {0}".format(garment_type[0][0]))
-				else:
+		#po_no=frappe.db.sql("""select name from `tabProduction Order` where sales_order=%s""",(sales_order)
+		#if not po_no:
+		#	frappe.throw("Can't Create Sample Production Order Before Main Production Order")
+		#else:
+		garment_type=frappe.db.sql("""select material_serial from `tabItem` where name=%s""",item_code)
+		if garment_type:
+			garment_details=frappe.get_doc("Garment Type",garment_type[0][0])
+			if not garment_details.sample_item:
+				frappe.throw("Select Sample Item For Garment {0}".format(garment_type[0][0]))
+			elif not garment_details.sample_bom:
+				frappe.throw("Select BOM For Sample Item In Garment {0}".format(garment_type[0][0]))
+			else:
 			
 			
-					bom_details=frappe.get_doc("BOM",garment_details.sample_bom)
-					parameter=frappe.get_doc("Parameter Table","Parameter")
-					production_order = frappe.get_doc(dict(
-							doctype='Production Order',
-							production_item=garment_details.sample_item,
-							bom_no=bom_details.name,
-							qty=1,
-							company=bom_details.company,
-							sales_order_no=sales_order,
-							sample_production_order=1,
-							production_order=po_no[0][0],
-							sales_order_item=sales_order_item,
-							fg_warehouse=parameter.production_order_warehouse,
-							drawing_no=d_no if not d_no==None else '',
-							measurement_no=measurement_no if not measurement_no==None else ''
-					)).insert()
-					production_order.set_production_order_operations()
-					production_order.submit()
-					if production_order.name:
+				bom_details=frappe.get_doc("BOM",garment_details.sample_bom)
+				parameter=frappe.get_doc("Parameter Table","Parameter")
+				production_order = frappe.get_doc(dict(
+						doctype='Production Order',
+						production_item=garment_details.sample_item,
+						bom_no=bom_details.name,
+						qty=1,
+						company=bom_details.company,
+						sales_order_no=sales_order,
+						sample_production_order=1,
+						sales_order_item=sales_order_item,
+						fg_warehouse=parameter.production_order_warehouse,
+						drawing_no=d_no if not d_no==None else '',
+						measurement_no=measurement_no if not measurement_no==None else ''
+				)).insert()
+				production_order.set_production_order_operations()
+				production_order.submit()
+				if production_order.name:
 						#addPODetailsINSalesOrder(production_order.name,sales_order,'Sample')
 						return production_order.name
 
@@ -237,13 +236,13 @@ def makeSampleProductionOrder(item_code,qty,sales_order,sales_order_item,d_no=No
 
 def makePOName(self,method):
 	try:
-		if not self.production_order:
+		if not self.sample_production_order:
 			so_no=self.sales_order_no
 			no=so_no[4:]
 			item_doc=frappe.get_doc("Sales Order Item",self.sales_order_item)
 			self.name='PROD '+str(no)+'/'+str(item_doc.idx)
 		else:
-			names = frappe.db.sql_list("""select name from `tabProduction Order` where production_order=%s""", self.production_order)
+			names = frappe.db.sql_list("""select name from `tabProduction Order` where sales_order_no=%s""", self.sales_order_no)
 			if names:
 				# name can be BOM/ITEM/001, BOM/ITEM/001-1, BOM-ITEM-001, BOM-ITEM-001-1
 
@@ -257,7 +256,12 @@ def makePOName(self,method):
 			else:
 				idx = 1
 
-			self.name = self.production_order.replace('PROD','SAMP') + ('-%.1i' % idx)
+			so_no=self.sales_order_no
+			no=so_no[4:]
+			item_doc=frappe.get_doc("Sales Order Item",self.sales_order_item)
+			self.name='SAMP '+str(no)+'/'+str(item_doc.idx)+ ('-%.1i' % idx)
+
+			#self.name = self.production_order.replace('PROD','SAMP') + ('-%.1i' % idx)
 		
 
 
