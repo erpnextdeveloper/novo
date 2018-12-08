@@ -146,7 +146,8 @@ def makeMultiplePO(doc_name):
 	msg=''
 	for row in sales_order_details.items:
 		po_no=makeProductionOrder(row.item_code,row.bom_no,row.qty,doc_name,row.name,row.warehouse,row.drawing_no,sales_order_details.measurement)
-		msg=msg+'<a href="#Form/Production Order/'+po_no+'">'+po_no+'</a>'+','
+		if po_no:
+			msg=msg+'<a href="#Form/Production Order/'+po_no+'">'+po_no+'</a>'+','
 	return msg
 
 
@@ -156,7 +157,8 @@ def makeMultipleSamplePO(doc_name):
 	msg=''
 	for row in sales_order_details.items:
 		po_no=makeSampleProductionOrder(row.item_code,row.qty,doc_name,row.name,row.drawing_no,sales_order_details.measurement)
-		msg=msg+'<a href="#Form/Production Order/'+po_no+'">'+po_no+'</a>'+','
+		if po_no:
+			msg=msg+'<a href="#Form/Production Order/'+po_no+'">'+po_no+'</a>'+','
 	return msg
 	
 
