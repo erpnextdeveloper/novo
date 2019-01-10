@@ -1,7 +1,7 @@
 // Copyright (c) 2018, Novo and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Content', {
+frappe.ui.form.on('Jacket Options', {
 	refresh: function(frm) {
 
 	}

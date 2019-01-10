@@ -306,6 +306,69 @@ def addTaxInItem():
 			doc=frappe.get_doc("Item",row[0])
 			doc.taxes=dict(item_tax)
 			doc.save()
+
+@frappe.whitelist()
+def makeDrawing(customer,customer_name,garment=None,prefix=None,measurement=None,item_code=None,j_option=None,t_option=None,w_option=None):
+	try:
+		material_serial=frappe.db.get_value("Item",item_code,"material_serial")
+		
+			
+		doc=frappe.get_doc(dict(
+			doctype="Drawing",
+			garment=str(material_serial),
+			prefix=str(prefix),
+			customer=str(customer),
+			customer_name=str(customer_name),
+			measurement=str(measurement),
+			trousers_options=t_option if not t_option==None else '',
+			jacket_options=j_option if not j_option==None else '',
+			waistcoat_options=w_option if not w_option==None else ''			
+
+		)).insert()
+		return doc.name
+
+
+	except Exception as e:
+		error_log=app_error_log(frappe.session.user,str(e))
+		frappe.msgprint("Something Went Wrong. Check Error Log")
+
+
+@frappe.whitelist()
+def makeVisit(customer,customer_name,sales_order=None):
+	try:
+		visit_doc=frappe.get_doc(dict(
+			doctype="Visit",
+			customer=customer,
+			customer_name=customer_name,
+			sales_order=sales_order if not sales_order==None else '',
+			date=today()			
+		)).insert()
+		return visit_doc.name
+
+	except Exception as e:
+		error_log=app_error_log(frappe.session.user,str(e))
+		frappe.msgprint("Something Went Wrong. Check Error Log")
+
+
+@frappe.whitelist()
+def makeVisitFromMeasurement(self,method):
+	try:
+		visit_doc=frappe.get_doc(dict(
+			doctype="Visit",
+			customer=self.customer,
+			customer_name=self.customer_name,
+			measurement=self.name,
+			date=today()			
+		)).insert()
+		frappe.db.set_value("Measurement",self.name,"visit",visit_doc.name)
+
+	except Exception as e:
+		error_log=app_error_log(frappe.session.user,str(e))
+		frappe.msgprint("Something Went Wrong. Check Error Log")
+
+
+
+	
 	
 
 

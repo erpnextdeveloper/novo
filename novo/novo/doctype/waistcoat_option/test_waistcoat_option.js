@@ -2,15 +2,15 @@
 // rename this file from _test_[name] to test_[name] to activate
 // and remove above this line
 
-QUnit.test("test: Content Percentage", function (assert) {
+QUnit.test("test: Waistcoat Option", function (assert) {
 	let done = assert.async();
 
 	// number of asserts
 	assert.expect(1);
 
 	frappe.run_serially([
-		// insert a new Content Percentage
-		() => frappe.tests.make('Content Percentage', [
+		// insert a new Waistcoat Option
+		() => frappe.tests.make('Waistcoat Option', [
 			// values to be set
 			{key: 'value'}
 		]),

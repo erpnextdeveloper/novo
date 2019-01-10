@@ -88,6 +88,9 @@ doc_events = {
 	},
 	"BOM": {
 		"after_autoname": "novo.api.makebomname"
+	},
+	"Measurement":{
+		"after_insert":"novo.api.makeVisitFromMeasurement"
 	}
 
 
