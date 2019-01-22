@@ -1,0 +1,23 @@
+{
+ "align_labels_right": 0, 
+ "creation": "2018-12-31 18:02:35.684629", 
+ "css": ".print-format {\npadding: 0in\n}", 
+ "custom_format": 1, 
+ "disabled": 0, 
+ "doc_type": "Sales Order", 
+ "docstatus": 0, 
+ "doctype": "Print Format", 
+ "font": "Default", 
+ "idx": 0, 
+ "line_breaks": 0, 
+ "modified": "2019-01-12 05:01:21.286943", 
+ "modified_by": "Administrator", 
+ "module": "Novo", 
+ "name": "Sales Order Form", 
+ "owner": "Administrator", 
+ "parent": "Sales Order", 
+ "print_format_builder": 0, 
+ "print_format_type": "Server", 
+ "show_section_headings": 0, 
+ "standard": "Yes"
+}

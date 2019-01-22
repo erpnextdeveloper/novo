@@ -14,6 +14,7 @@ import string
 import random
 import json
 import time
+import datetime
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
@@ -365,6 +366,26 @@ def makeVisitFromMeasurement(self,method):
 	except Exception as e:
 		error_log=app_error_log(frappe.session.user,str(e))
 		frappe.msgprint("Something Went Wrong. Check Error Log")
+
+
+@frappe.whitelist()
+def makeMeasurement(customer,customer_name,date)
+	try:
+		doc=frappe.get_doc(dict(
+			doctype="Measurement",
+			customer=customer,
+			customer_name=customer_name,
+			date=date
+		)).insert()
+		return doc.name
+	except Exception as e:
+		error_log=app_error_log(frappe.session.user,str(e))
+		frappe.msgprint("Something Went Wrong. Check Error Log")
+	
+
+@frappe.whitelist()
+def getTime():
+	return datetime.now().strftime("%H:%M:%S")
 
 
 

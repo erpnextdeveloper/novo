@@ -91,6 +91,9 @@ doc_events = {
 	},
 	"Measurement":{
 		"after_insert":"novo.api.makeVisitFromMeasurement"
+	},
+	"Appointment": {
+		"after_insert": "erpnext.sms_api.sendAppointmentConfirmation"
 	}
 
 
@@ -98,11 +101,15 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
-
 scheduler_events = {
 	"daily": [
 		"erpnext.api.changeCurrencyExchange"
+	],
+    	"cron": {
+		"17 00 * * *": [
+			"erpnext.sms_api.msgReminder"
 	]
+	}
 }
 
 
