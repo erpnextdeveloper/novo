@@ -79,6 +79,8 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
+fixtures=["Print Format","Custom Script"]
+
 doc_events = {
 	"Sales Order": {
 		"on_submit": "novo.api.makeBOM"
