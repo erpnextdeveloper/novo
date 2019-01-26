@@ -75,7 +75,7 @@
   "docstatus": 0, 
   "doctype": "Custom Script", 
   "dt": "Inter Company Setting", 
-  "modified": "2018-11-05 16:27:35.312629", 
+  "modified": "2019-01-26 21:01:03.932624", 
   "name": "Inter Company Setting-Client", 
   "script": "frappe.ui.form.on(\"Inter Company Setting\", \"onload\", function(frm) {\n    cur_frm.set_query(\"supplier\", function() {\n        return {\n            \"filters\": {\n                \"supplier_type\": \"Intercompany\"\n            }\n        };\n    });\n});\n\ncur_frm.set_query(\"customer\",function() {\n    return {\n        query: \"erpnext.api.customer_query\"\n    };\n});\n\n\n", 
   "script_type": "Client"
@@ -84,7 +84,7 @@
   "docstatus": 0, 
   "doctype": "Custom Script", 
   "dt": "Sales Invoice", 
-  "modified": "2018-11-08 17:37:06.663958", 
+  "modified": "2019-01-26 21:01:45.173069", 
   "name": "Sales Invoice-Client", 
   "script": "frappe.ui.form.on('Sales Invoice', {\n\tcompany: function(frm,cdt,cdn) {\n\t\tvar invoice=locals[cdt][cdn]\n\t\tif(invoice.company && invoice.posting_date){\n\t\t\tfrappe.call({\n\t\t\t\tmethod:\"erpnext.api.getFiscalYear\",\n\t\t\t\targs:{'company_name':invoice.company,'date':invoice.posting_date},\n\t\t\t\tcallback:function(r){\n\t\t\t\t\tfrappe.model.set_value(cdt,cdn,\"fiscal_year\",r.message)\n\t\t\t\t}\n\t\t\n\t\t\t})\n\t\t}\n\t\n\n\t},\n\tposting_date: function(frm,cdt,cdn) {\n\t\tvar invoice=locals[cdt][cdn]\n\t\tif(invoice.company && invoice.posting_date){\n\t\t\tfrappe.call({\n\t\t\t\tmethod:\"erpnext.api.getFiscalYear\",\n\t\t\t\targs:{'company_name':invoice.company,'date':invoice.posting_date},\n\t\t\t\tcallback:function(r){\n\t\t\t\t\tfrappe.model.set_value(cdt,cdn,\"fiscal_year\",r.message)\n\t\t\t\t}\n\t\t\n\t\t\t})\n\t\t}\n\t\n\n\t}\n\t\n})", 
   "script_type": "Client"
